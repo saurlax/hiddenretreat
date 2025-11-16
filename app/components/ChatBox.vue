@@ -13,19 +13,19 @@
         </div>
       </div>
     </div>
-    <div class="flex gap-2">
-      <input
+    <div class="flex gap-2 items-stretch">
+      <PxInput
         v-model="local"
         @keyup.enter="onSend"
         placeholder="输入设计需求"
         class="flex-1 p-2 border rounded"
       />
-      <button
+      <PxButton
         @click="onSend"
         class="px-3 py-2 border-none bg-blue-600 text-white rounded"
       >
         发送
-      </button>
+      </PxButton>
     </div>
   </div>
 </template>
