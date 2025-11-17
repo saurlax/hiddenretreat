@@ -1,48 +1,41 @@
 <template>
-  <div class="p-2 bg-white flex flex-col">
-    <div class="flex-1 overflow-auto mb-2">
-      <div
+  <PxCard>
+    <div class="flex flex-col gap-2">
+      <PxCard
         v-for="(m, i) in messages.filter((m) => !m.hidden)"
+        :class="`box-border ${m.role}`"
         :key="i"
-        class="mb-2"
       >
-        <div :class="m.role === 'user' ? 'text-right' : 'text-left'">
-          <div class="inline-block p-2 rounded-lg bg-gray-100">
-            {{ m.content }}
-          </div>
-        </div>
-      </div>
+        {{ m.content }}
+      </PxCard>
     </div>
-    <div class="flex gap-2 items-stretch">
-      <PxInput
-        v-model="local"
-        @keyup.enter="onSend"
-        placeholder="输入设计需求"
-        class="flex-1 p-2 border rounded"
-      />
-      <PxButton
-        @click="onSend"
-        class="px-3 py-2 border-none bg-blue-600 text-white rounded"
-      >
-        发送
-      </PxButton>
-    </div>
-  </div>
+    <template #footer>
+      <form class="flex gap-2" @submit.prevent="onSend">
+        <PxInput v-model="question" placeholder="输入设计需求" />
+        <PxButton @click="onSend">发送</PxButton>
+      </form>
+    </template>
+  </PxCard>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 const props = defineProps<{
   messages: Array<{ role: string; content: string; hidden?: boolean }>;
 }>();
 const emit = defineEmits(["send"]);
-const local = ref("");
+const question = ref("");
 
 function onSend() {
-  if (!local.value.trim()) return;
-  emit("send", local.value.trim());
-  local.value = "";
+  if (!question.value.trim()) return;
+  emit("send", question.value.trim());
+  question.value = "";
 }
 </script>
 
-<style scoped></style>
+<style>
+.assistant {
+  color: var(--px-color-white);
+  --px-bg-color: var(--px-color-primary) !important;
+  --px-bg-shadow-color: var(--px-color-primary-dark-2) !important;
+}
+</style>
